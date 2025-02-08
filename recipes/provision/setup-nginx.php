@@ -5,7 +5,10 @@ namespace Deployer;
 
 desc('Sets up Nginx');
 task('provision:setup-nginx', function () {
-    // set('remote_user', get('provision_user'));
+    set('remote_user', get('provision_user'));
+
+    run('systemctl enable nginx');
+    run('systemctl start nginx');
 
     $nginxConf = file_get_contents(__DIR__ . '/nginx/nginx.conf');
 
@@ -24,14 +27,13 @@ task('provision:setup-nginx', function () {
     run("echo $'$securityConf' > /etc/nginx/nginxconfig.io/security.conf");
 
     run('mkdir -p /etc/nginx/sites-available');
+    run('mkdir -p /etc/nginx/sites-enabled');
 
-    $domainConf = parse(file_get_contents(__DIR__ . '/nginx/domain.conf'));
-
-    var_dump($domainConf);
-    die();
-
-    run('systemctl enable nginx');
-    run('systemctl start nginx');
+    run('chmod 644 -R /etc/nginx/sites-available');
+    run('chmod 644 -R /etc/nginx/sites-enabled');
+    run('chmod 644 -R /etc/nginx/nginxconfig.io');
+    run('chmod 644 -R /etc/nginx/nginxconfig.io');
+    run('chmod 644 /etc/nginx/nginx.conf');
 })
     ->oncePerNode()
     ->verbose();

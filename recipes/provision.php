@@ -2,19 +2,12 @@
 
 namespace Deployer;
 
-// require __DIR__ . '/provision/databases.php';
 require __DIR__ . '/provision/php.php';
 require __DIR__ . '/provision/user.php';
 require __DIR__ . '/provision/setup-nginx.php';
-// require __DIR__ . '/provision/website.php';
+require __DIR__ . '/provision/website.php';
 
-// use Deployer\Task\Context;
-
-// use function Deployer\Support\parse_home_dir;
-
-// add('recipes', ['provision']);
-
-// desc('Provision the server');
+desc('Provision the server');
 task('provision', [
     'provision:check',
     'provision:configure',
@@ -33,13 +26,6 @@ task('provision', [
     'provision:website',
     'provision:verify',
 ]);
-
-task('provision:test', function () {
-    $domainConf = parse(file_get_contents(__DIR__ . '/provision/nginx/domain.conf'));
-
-    var_dump($domainConf);
-    die();
-});
 
 desc('Adds repositories and update');
 task('provision:update', function () {

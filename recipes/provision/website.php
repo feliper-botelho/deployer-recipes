@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Deployer;
 
-use function Deployer\Support\escape_shell_argument;
-
 set('domain', function () {
     return ask(' Domain: ', get('hostname'));
 });
@@ -13,6 +11,15 @@ set('domain', function () {
 set('public_path', function () {
     return ask(' Public path: ', 'public');
 });
+
+desc('Configures a server');
+task('provision:server', function () {
+    set('remote_user', get('provision_user'));
+
+    run("mkdir -p /var/deployer");
+    $html = file_get_contents(__DIR__ . '/404.html');
+    run("echo $'$html' > /var/deployer/404.html");
+})->oncePerNode();
 
 desc('Provision website');
 task('provision:website', function () {
@@ -39,8 +46,6 @@ task('provision:website', function () {
 
     run('chown www-data /var/www/_letsencrypt');
 
-    $domain = get('domain');
-
     run('sed -i -r \'
         s/listen\\s+443 ssl http2;/listen 80;/g;
         s/listen\\s+\\[::\\]:443 ssl http2;/listen [::]:80;/g;
@@ -50,7 +55,7 @@ task('provision:website', function () {
 
     run('nginx -t && systemctl reload nginx');
 
-    // run("certbot certonly --webroot -d $domain --email info@$domain -w /var/www/_letsencrypt -n --agree-tos --force-renewal");
+    run("certbot certonly --webroot -d {{domain}} --email info@{{domain}} -w /var/www/_letsencrypt -n --agree-tos --force-renewal");
 
     run('sed -i -r \'
     s/listen\\s+80;/listen 443 ssl http2;/g;

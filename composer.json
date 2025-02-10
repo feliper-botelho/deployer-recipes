@@ -1,19 +1,19 @@
 {
-    "name": "evolutap/deployer-recipes",
-    "description": "3rd party deployer recipes",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Felipe Botelho",
-            "email": "felipe.botelho@evolutap.com.br"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require-dev": {
-        "deployer/deployer": "^7.5"
-    },
-    "require": {
-        "php": "~8.0"
+  "name": "skrek/deployer-recipes",
+  "description": "3rd party deployer recipes",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Felipe Botelho",
+      "email": "felipe.botelho@evolutap.com.br"
     }
+  ],
+  "minimum-stability": "stable",
+  "require-dev": {
+    "deployer/deployer": "^7.5"
+  },
+  "require": {
+    "php": ">=8.0"
+  }
 }
